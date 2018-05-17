@@ -1,6 +1,7 @@
 package com.company.cc.account.resource;
 
 
+import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.dto.AccountDTO;
@@ -33,7 +34,7 @@ public class AccountResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/accounts")
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) throws URISyntaxException {
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) throws URISyntaxException, EntityAlreadyExistsException {
         log.debug("REST request to create account : {}", accountDTO);
 
         AccountDTO result = accountService.create(accountDTO);

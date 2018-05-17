@@ -1,6 +1,7 @@
 package com.company.cc.account.domain;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Objects;
 
