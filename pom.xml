@@ -6,7 +6,7 @@
     <version>0.0.1</version>
     <groupId>com.company.cc</groupId>
     <packaging>pom</packaging>
-    <name>APIs</name>
+    <name>credit-card-api</name>
 
     <modules>
         <module>account</module>

@@ -1,0 +1,9 @@
+accounts-service:
+  image: cc/accounts-service:latest
+  ports:
+    - '80'
+
+transactions-service:
+  image: cc/transactions-service:latest
+  ports:
+    - '80'
