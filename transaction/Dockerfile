@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 
-ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/myservice/myservice.jar"]
+ENTRYPOINT /usr/bin/java ${JAVA_OPTIONS} -jar /usr/share/myservice/myservice.jar
 
 # Add the service itself
 ARG JAR_FILE

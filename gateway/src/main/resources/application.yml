@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: gateway
+
+zuul:
+  routes:
+    accounts-api:
+      path: /accounts-service/**
+      serviceId: account
+
+    transactions-api:
+      path: /transactions-service/**
+      serviceId: transaction
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://user:password@localhost:8761}/eureka/
+
+
+
+

@@ -1,14 +1,16 @@
-package com.company.cc.transaction;
+package com.company.cc.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
-@EnableDiscoveryClient
 @SpringBootApplication
-public class TransactionApplication {
+@EnableZuulProxy
+@EnableDiscoveryClient
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TransactionApplication.class, args);
+		SpringApplication.run(GatewayApplication.class, args);
 	}
 }

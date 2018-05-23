@@ -1,9 +1,43 @@
-accounts-service:
-  image: cc/accounts-service:latest
-  ports:
-    - '80'
+version: '3'
 
-transactions-service:
-  image: cc/transactions-service:latest
-  ports:
-    - '80'
+services:
+  accounts-service:
+    image: cc/accounts-service:latest
+    expose:
+      - '8080'
+    ports:
+      - '9080:8080'
+    depends_on:
+      - gateway
+    environment:
+      - EUREKA_URL=http://user:password@eureka-server:8761
+      - JAVA_OPTIONS=-Xmx300m
+
+
+  transactions-service:
+    image: cc/transactions-service:latest
+    expose:
+      - '8080'
+    ports:
+      - '9180:8080'
+    depends_on:
+      - gateway
+    environment:
+      - EUREKA_URL=http://user:password@eureka-server:8761
+      - JAVA_OPTIONS=-Xmx300m
+
+
+  gateway:
+    image: cc/gateway:latest
+    ports:
+      - '8080:8080'
+    environment:
+      - EUREKA_URL=http://user:password@eureka-server:8761
+      - JAVA_OPTIONS=-Xmx300m
+
+  eureka-server:
+    image: cc/eureka-server:latest
+    ports:
+      - '8761:8761'
+    environment:
+      - JAVA_OPTIONS=-Xmx300m
