@@ -3,10 +3,12 @@ package com.company.cc.account.service.mapper;
 import com.company.cc.account.domain.Account;
 import com.company.cc.account.service.dto.AccountDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {})
 public interface AccountMapper extends EntityMapper<AccountDTO, Account> {
 
+    @Mapping(target = "balance", ignore = true)
     AccountDTO toDto(Account account);
 
     Account toEntity(AccountDTO accountDTO);

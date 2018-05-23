@@ -12,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,7 +85,9 @@ public class TransactionServiceImp implements TransactionService{
     }
 
     @Override
-    public Page<TransactionDTO> getByAccountId(String accountId, Pageable pageable) {
-        return null;
+    public List<TransactionDTO> getByAccountId(Long accountId) {
+        return transactionRepository.findByAccountId(accountId)
+                .stream().map(transactionMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

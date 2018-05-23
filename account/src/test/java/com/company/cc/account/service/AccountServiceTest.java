@@ -5,8 +5,11 @@ import com.company.cc.account.AccountApplication;
 import com.company.cc.account.domain.Account;
 import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
+import com.company.cc.account.exceptions.TransactionCreationException;
+import com.company.cc.account.exceptions.TransactionFetchException;
 import com.company.cc.account.repository.AccountRepository;
 import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.account.service.dto.NewAccountDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +46,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void findById() throws EntityNotFoundException {
+    public void findById() throws EntityNotFoundException, TransactionFetchException {
 
 
         AccountDTO accountDTO = accountService.findOne(testAccount.getId());
@@ -80,13 +83,13 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void createAccountWithCustomerId() throws EntityNotFoundException, EntityAlreadyExistsException {
+    public void createAccountWithCustomerId() throws EntityNotFoundException, EntityAlreadyExistsException, TransactionCreationException {
 
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setCustomerId(20l);
-        accountDTO.setBalance(0);
+        NewAccountDTO newAccountDTO = new NewAccountDTO();
+        newAccountDTO.setCustomerId(20l);
+        newAccountDTO.setInitialCredit(0);
 
-        AccountDTO createdAccount = accountService.create(accountDTO);
+        AccountDTO createdAccount = accountService.create(newAccountDTO);
         assertThat(createdAccount.getId()).isNotNull();
         assertThat(createdAccount.getCustomerId()).isEqualTo(20l);
         assertThat(createdAccount.getBalance()).isEqualTo(0);
@@ -94,33 +97,19 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void createAccountWithCustomerIdAndBalance() throws EntityAlreadyExistsException {
+    public void createAccountWithCustomerIdAndBalance() throws EntityAlreadyExistsException, TransactionCreationException {
 
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setCustomerId(20l);
-        accountDTO.setBalance(10l);
+        NewAccountDTO newAccountDTO = new NewAccountDTO();
+        newAccountDTO.setCustomerId(20l);
+        newAccountDTO.setInitialCredit(10l);
 
-        AccountDTO createdAccount = accountService.create(accountDTO);
+        AccountDTO createdAccount = accountService.create(newAccountDTO);
         assertThat(createdAccount.getId()).isNotNull();
         assertThat(createdAccount.getCustomerId()).isEqualTo(20l);
 
         // assertThat(createdAccount.getTransactions()).isEqualTo(20l);
     }
 
-    @Test
-    public void failedToCreateExistingAccount() throws EntityNotFoundException {
-
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(1l);
-        accountDTO.setCustomerId(20l);
-        accountDTO.setBalance(10l);
-
-
-        assertThatThrownBy(() -> accountService.create(accountDTO) )
-                .isInstanceOf(EntityAlreadyExistsException.class)
-                .hasMessageContaining("Account entity is already exists with {id:1}");
-
-    }
 
     @Test
     public void updateAccountBalance() throws EntityNotFoundException {

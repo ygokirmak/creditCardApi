@@ -1,7 +1,6 @@
 package com.company.cc.account.domain;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -22,9 +21,6 @@ public class Account implements Serializable {
 
     @Column(name = "surname")
     private String surname;
-
-    @Column(name = "balance")
-    private long balance;
 
     public Long getId() {
         return id;
@@ -62,22 +58,12 @@ public class Account implements Serializable {
         return this;
     }
 
-    public long getBalance() {
-        return balance;
-    }
-
-    public Account setBalance(long balance) {
-        this.balance = balance;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        return balance == account.balance &&
-                Objects.equals(id, account.id) &&
+        return  Objects.equals(id, account.id) &&
                 Objects.equals(customerId, account.customerId) &&
                 Objects.equals(name, account.name) &&
                 Objects.equals(surname, account.surname);
@@ -85,6 +71,6 @@ public class Account implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerId, name, surname, balance);
+        return Objects.hash(id, customerId, name, surname);
     }
 }

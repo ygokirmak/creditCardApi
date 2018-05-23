@@ -1,5 +1,7 @@
 package com.company.cc.account.service.dto;
 
+import java.util.List;
+
 public class AccountDTO {
 
     private Long id;
@@ -11,6 +13,8 @@ public class AccountDTO {
     private String surname;
 
     private long balance;
+
+    private List<TransactionDTO> transactions;
 
 
     public Long getId() {
@@ -55,6 +59,15 @@ public class AccountDTO {
 
     public AccountDTO setBalance(long balance) {
         this.balance = balance;
+        return this;
+    }
+
+    public List<TransactionDTO> getTransactions() {
+        return transactions;
+    }
+
+    public AccountDTO setTransactions(List<TransactionDTO> transactions) {
+        this.transactions = transactions;
         return this;
     }
 }

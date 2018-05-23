@@ -84,16 +84,16 @@ public class TransactionResource {
 
 
     /**
-     * GET  /deals : get all the deals.
+     * GET  /transactions : get all the transactions.
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
+     * @param accountId the accountId information
+     * @return the ResponseEntity with status 200 (OK) and the list of transactions in body
      */
     @GetMapping("/transactions")
-    public ResponseEntity<List<TransactionDTO>> getTransactions(@RequestParam(required = false) String accountId, @RequestParam(required = false) Pageable pageable) {
+    public ResponseEntity<List<TransactionDTO>> getTransactions(@RequestParam(required = true) Long accountId) {
         log.debug("REST request to get a page of Transactions");
-        Page<TransactionDTO> page = transactionService.getByAccountId(accountId, pageable);
-        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
+        List<TransactionDTO> result = transactionService.getByAccountId(accountId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

@@ -3,50 +3,108 @@ package com.company.cc.account.service.impl;
 import com.company.cc.account.domain.Account;
 import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
+import com.company.cc.account.exceptions.TransactionCreationException;
+import com.company.cc.account.exceptions.TransactionFetchException;
 import com.company.cc.account.repository.AccountRepository;
 import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.account.service.dto.NewAccountDTO;
+import com.company.cc.account.service.dto.TransactionDTO;
 import com.company.cc.account.service.mapper.AccountMapper;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class AccountServiceImp implements AccountService{
 
     AccountRepository accountRepository;
     AccountMapper accountMapper;
 
-    public AccountServiceImp(AccountRepository accountRepository, AccountMapper accountMapper) {
+    RestTemplate restTemplate;
+
+
+    public AccountServiceImp(AccountRepository accountRepository, AccountMapper accountMapper,
+                             RestTemplate restTemplate) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
+        this.restTemplate = restTemplate;
     }
 
     @Override
-    public AccountDTO findOne(long id) throws EntityNotFoundException {
+    public AccountDTO findOne(long id) throws EntityNotFoundException, TransactionFetchException {
 
         Optional<Account> account = accountRepository.findById(id);
 
         if( account.isPresent() ){
-            return accountMapper.toDto(account.get());
+            AccountDTO accountDTO = accountMapper.toDto(account.get());
+            List<TransactionDTO> transactionDTOS = getAccountTransactions(accountDTO.getId());
+            accountDTO.setTransactions(transactionDTOS);
+            return accountDTO;
         }else{
             throw new EntityNotFoundException(Account.class, "id", String.valueOf(id));
         }
     }
 
-    @Override
-    public AccountDTO create(AccountDTO accountDTO) throws EntityAlreadyExistsException {
+    private List<TransactionDTO> getAccountTransactions(Long id) throws TransactionFetchException {
+        try {
+            ParameterizedTypeReference<List<TransactionDTO>> typeReference =
+                    new ParameterizedTypeReference<List<TransactionDTO>>() {};
 
-        if( accountDTO.getId() != null){
-            throw new EntityAlreadyExistsException(Account.class, accountDTO.getId());
+            ResponseEntity<List<TransactionDTO>> response =
+                    restTemplate.exchange("http://transaction/api/transactions?accountId="+id, HttpMethod.GET, null, typeReference);
+
+            return response.getBody();
+        } catch (RestClientException ex){
+            throw new TransactionFetchException(id);
         }
+    }
 
-        Account account = accountMapper.toEntity(accountDTO);
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public AccountDTO create(NewAccountDTO newAccountDTO) throws EntityAlreadyExistsException, TransactionCreationException {
+
+        Account account = new Account();
+        account.setCustomerId(newAccountDTO.getCustomerId());
         account = accountRepository.save(account);
 
+        if( newAccountDTO.getInitialCredit() > 0){
+            createTransaction(account, newAccountDTO.getInitialCredit());
+        }
+
         return accountMapper.toDto(account);
+    }
+
+    private void createTransaction(Account account, long initialCredit) throws TransactionCreationException {
+        TransactionDTO transactionDTO = new TransactionDTO();
+        transactionDTO.setAccountId(account.getId());
+        transactionDTO.setDirection("IN");
+        transactionDTO.setAmount(initialCredit);
+
+        createTransaction(transactionDTO);
+
+    }
+
+    private void createTransaction(TransactionDTO transactionDTO) throws TransactionCreationException {
+
+        try {
+            HttpEntity<TransactionDTO> request = new HttpEntity<>(transactionDTO);
+            TransactionDTO trx = restTemplate.postForObject("http://transaction/api/transactions", request, TransactionDTO.class);
+        } catch (RestClientException ex){
+            throw new TransactionCreationException(transactionDTO);
+        }
+
     }
 
     @Override
@@ -77,5 +135,11 @@ public class AccountServiceImp implements AccountService{
             throw new EntityNotFoundException(Account.class, "id", String.valueOf(id));
         }
 
+    }
+
+    @Override
+    public List<AccountDTO> getAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream().map( accountMapper::toDto).collect(Collectors.toList());
     }
 }

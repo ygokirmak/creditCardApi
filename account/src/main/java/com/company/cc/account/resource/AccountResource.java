@@ -3,16 +3,24 @@ package com.company.cc.account.resource;
 
 import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
+import com.company.cc.account.exceptions.TransactionCreationException;
+import com.company.cc.account.exceptions.TransactionFetchException;
 import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.account.service.dto.NewAccountDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -27,17 +35,29 @@ public class AccountResource {
     }
 
     /**
+     * GET  /accounts : get all the accounts.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
+     */
+    @GetMapping("/accounts")
+    public ResponseEntity<List<AccountDTO>> getAccounts() {
+        log.debug("REST request to get a page of Accounts");
+        List<AccountDTO> result = accountService.getAccounts();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
      * POST  /accounts : Create a new account.
      *
-     * @param accountDTO the accountDTO to create
+     * @param newAccountDTO the accountDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new accountDTO, or with status 400 (Bad Request) if the stage has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/accounts")
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) throws URISyntaxException, EntityAlreadyExistsException {
-        log.debug("REST request to create account : {}", accountDTO);
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody NewAccountDTO newAccountDTO) throws URISyntaxException, EntityAlreadyExistsException, TransactionCreationException {
+        log.debug("REST request to create account : {}", newAccountDTO);
 
-        AccountDTO result = accountService.create(accountDTO);
+        AccountDTO result = accountService.create(newAccountDTO);
         return ResponseEntity.created(new URI("/api/accounts/" + result.getId()))
             .body(result);
     }
@@ -67,7 +87,7 @@ public class AccountResource {
      * @return the ResponseEntity with status 200 (OK) and with body the accountDTO, or with status 404 (Not Found)
      */
     @GetMapping("/accounts/{id}")
-    public ResponseEntity getAccount(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity getAccount(@PathVariable Long id) throws EntityNotFoundException, TransactionFetchException {
         log.debug("REST request to get Account : {}", id);
         AccountDTO accountDTO = accountService.findOne(id);
 
