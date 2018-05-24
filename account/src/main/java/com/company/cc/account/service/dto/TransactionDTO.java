@@ -54,4 +54,13 @@ public class TransactionDTO {
                 ", direction='" + direction + '\'' +
                 '}';
     }
+
+    public TransactionDTO(Long amount, Long accountId, String direction) {
+        this.amount = amount;
+        this.accountId = accountId;
+        this.direction = direction;
+    }
+
+    public TransactionDTO() {
+    }
 }

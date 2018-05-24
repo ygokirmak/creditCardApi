@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface AccountService {
 
-    AccountDTO findOne(long id) throws EntityNotFoundException, TransactionFetchException;
+    AccountDTO getOne(long id) throws EntityNotFoundException, TransactionFetchException;
 
     AccountDTO create(NewAccountDTO newAccountDTO) throws EntityAlreadyExistsException, TransactionCreationException;
 

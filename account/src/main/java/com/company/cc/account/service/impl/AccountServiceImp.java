@@ -41,7 +41,7 @@ public class AccountServiceImp implements AccountService{
     }
 
     @Override
-    public AccountDTO findOne(long id) throws EntityNotFoundException, TransactionFetchException {
+    public AccountDTO getOne(long id) throws EntityNotFoundException, TransactionFetchException {
 
         Optional<Account> account = accountRepository.findById(id);
 

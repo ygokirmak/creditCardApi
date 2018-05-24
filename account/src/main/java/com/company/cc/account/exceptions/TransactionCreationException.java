@@ -6,6 +6,6 @@ import org.springframework.util.StringUtils;
 public class TransactionCreationException extends Exception {
 
     public TransactionCreationException(TransactionDTO transactionDTO) {
-        super(String.format("Cloudn't create transaction for object: %s ", transactionDTO.toString()));
+        super(String.format("Couldn't create transaction for object: %s ", transactionDTO.toString()));
     }
 }
