@@ -27,11 +27,13 @@ docker-compose up -d
 1- Add more tests
  - test a
  - test b
+ 
 2- Add pagination to `transactions-service/api/transactions` endpoint
 
 3- Currently account-service fetchs transactions for an account from transactions-service. Instead, account-service should get max N transactions from transactions-service to keep account-service safe. If client want to fetch all transactions it can use `transactions-service/api/transactions` endpoint.
 
 4- Currently balance is calculated on account-service on each account get request iterating over transactions. There may be better solutions ( we can decide such solutions according to api usage frequencies and patterns, i.e how transactions are created, how balance is changed )
+
  - Calculate balance on transaction-service and return it as response header
  - Or inform account on each new transaction and keep calculated balance on account. 
 
