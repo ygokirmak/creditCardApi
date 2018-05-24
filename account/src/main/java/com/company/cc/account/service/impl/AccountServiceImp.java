@@ -12,8 +12,6 @@ import com.company.cc.account.service.dto.NewAccountDTO;
 import com.company.cc.account.service.dto.TransactionDTO;
 import com.company.cc.account.service.mapper.AccountMapper;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +47,24 @@ public class AccountServiceImp implements AccountService{
 
         if( account.isPresent() ){
             AccountDTO accountDTO = accountMapper.toDto(account.get());
-            List<TransactionDTO> transactionDTOS = getAccountTransactions(accountDTO.getId());
-            accountDTO.setTransactions(transactionDTOS);
+            List<TransactionDTO> transactions = getAccountTransactions(accountDTO.getId());
+            long balance = calculateBalance(transactions);
+            accountDTO.setTransactions(transactions);
+            accountDTO.setBalance(balance);
             return accountDTO;
         }else{
             throw new EntityNotFoundException(Account.class, "id", String.valueOf(id));
         }
+    }
+
+    private long calculateBalance(List<TransactionDTO> transactions) {
+        long balance = 0;
+
+        for (TransactionDTO trx: transactions) {
+            balance += trx.getDirection().equals("IN") ? trx.getAmount(): ( trx.getAmount()* -1);
+        }
+
+        return  balance;
     }
 
     private List<TransactionDTO> getAccountTransactions(Long id) throws TransactionFetchException {
