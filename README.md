@@ -22,6 +22,15 @@ docker-compose up -d
 
 3- Hit `http://localhost:8761/` from browser to see ACCOUNT, TRANSACTION and GATEWAY components are running and registered to eureka-server.
 
+## Features
+- [x] unit tests for service layer with service mocks
+- [x] dockerized services with spotify-maven-docker library
+- [x] docker-compose to run all containers
+- [x] spring-eureka for service discovery
+- [x] zuul reverse proxy ( gateway ) to access multiple services seamlessly
+- [x] 
+
+
 ## TODO
 
 1- Add more tests
