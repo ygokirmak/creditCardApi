@@ -18,5 +18,5 @@ public interface TransactionService {
 
     TransactionDTO delete(long id) throws EntityNotFoundException;
 
-    List<TransactionDTO> getByAccountId(Long accountId);
+    Page<TransactionDTO> getByAccountId(Long accountId, Pageable pageable);
 }

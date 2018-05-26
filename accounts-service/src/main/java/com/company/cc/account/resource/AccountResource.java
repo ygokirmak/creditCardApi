@@ -5,11 +5,16 @@ import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.exceptions.TransactionCreationException;
 import com.company.cc.account.exceptions.TransactionFetchException;
+import com.company.cc.account.resource.utils.PaginationUtil;
 import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.dto.AccountDTO;
 import com.company.cc.account.service.dto.NewAccountDTO;
+import com.sun.net.httpserver.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +41,12 @@ public class AccountResource {
      * @return the ResponseEntity with status 200 (OK) and the list of deals in body
      */
     @GetMapping("/accounts")
-    public ResponseEntity<List<AccountDTO>> getAccounts() {
+    public ResponseEntity<List<AccountDTO>> getAccounts(Pageable pageable) {
         log.debug("REST request to get a page of Accounts");
-        List<AccountDTO> result = accountService.getAccounts();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        Page<AccountDTO> page = accountService.getAccounts(pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,"/api/accounts");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -55,24 +62,6 @@ public class AccountResource {
 
         AccountDTO result = accountService.create(newAccountDTO);
         return ResponseEntity.created(new URI("/api/accounts/" + result.getId()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /accounts : Updates an existing account.
-     *
-     * @param accountDTO the accountDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated accountDTO,
-     * or with status 400 (Bad Request) if the accountDTO is not valid,
-     * or with status 500 (Internal Server Error) if the accountDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/accounts")
-    public ResponseEntity<AccountDTO> updateAccount(@RequestBody AccountDTO accountDTO) throws URISyntaxException, EntityNotFoundException {
-        log.debug("REST request to update Account : {}", accountDTO);
-
-        AccountDTO result = accountService.update(accountDTO);
-        return ResponseEntity.ok()
             .body(result);
     }
 

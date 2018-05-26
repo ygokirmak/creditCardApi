@@ -12,6 +12,10 @@ zuul:
       path: /transactions-service/**
       serviceId: transactions-service
 
+    customers-api:
+      path: /customers-service/**
+      serviceId: customers-service
+
 server:
   port: 8080
 

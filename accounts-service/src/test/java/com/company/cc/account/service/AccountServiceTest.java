@@ -20,13 +20,13 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,8 +40,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AccountApplication.class)
-@Transactional
 public class AccountServiceTest {
+
+    @Mock
+    private RabbitTemplate rabbitTemplate;
 
     @Mock
     private RestTemplate restTemplate;
@@ -58,17 +60,18 @@ public class AccountServiceTest {
 
     @Before
     public void setup() {
+
+        accountRepository.deleteAll();
+
         testAccount = new Account();
         testAccount.setId(1l);
         testAccount.setCustomerId(10l);
-        testAccount.setName("test-name-1");
-        testAccount.setSurname("test-surname-1");
 
         testAccount = accountRepository.save(testAccount);
 
         MockitoAnnotations.initMocks(this);
 
-        accountService = new AccountServiceImp(accountRepository,accountMapper,restTemplate);
+        accountService = new AccountServiceImp(accountRepository,accountMapper,restTemplate,rabbitTemplate);
 
     }
 
@@ -88,8 +91,6 @@ public class AccountServiceTest {
 
         assertThat(accountDTO.getId()).isEqualTo(testAccount.getId());
         assertThat(accountDTO.getCustomerId()).isEqualTo(10l);
-        assertThat(accountDTO.getName()).isEqualTo("test-name-1");
-        assertThat(accountDTO.getSurname()).isEqualTo("test-surname-1");
         assertThat(accountDTO.getBalance()).isEqualTo(30l);
 
     }
@@ -113,8 +114,6 @@ public class AccountServiceTest {
 
         assertThat(accountDTO.getId()).isEqualTo(testAccount.getId());
         assertThat(accountDTO.getCustomerId()).isEqualTo(10l);
-        assertThat(accountDTO.getName()).isEqualTo("test-name-1");
-        assertThat(accountDTO.getSurname()).isEqualTo("test-surname-1");
         assertThat(accountDTO.getBalance()).isEqualTo(-150l);
 
     }

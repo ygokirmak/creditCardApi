@@ -9,6 +9,7 @@
     <name>finance-customer-management</name>
 
     <modules>
+        <module>customers-service</module>
         <module>accounts-service</module>
         <module>transactions-service</module>
         <module>gateway</module>

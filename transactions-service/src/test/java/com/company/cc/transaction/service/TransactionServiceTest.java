@@ -6,11 +6,13 @@ import com.company.cc.transaction.exceptions.EntityNotFoundException;
 import com.company.cc.transaction.TransactionApplication;
 import com.company.cc.transaction.domain.Transaction;
 import com.company.cc.transaction.domain.enumeration.TransactionDirection;
+import com.company.cc.transaction.messages.Receiver;
 import com.company.cc.transaction.repository.TransactionRepository;
 import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest(classes = TransactionApplication.class)
 @Transactional
 public class TransactionServiceTest {
+
+    @Mock
+    Receiver receiver;
 
     @Autowired
     TransactionService transactionService;

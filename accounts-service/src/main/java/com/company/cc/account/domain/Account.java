@@ -16,12 +16,6 @@ public class Account implements Serializable {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "surname")
-    private String surname;
-
     public Long getId() {
         return id;
     }
@@ -40,37 +34,16 @@ public class Account implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Account setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public Account setSurname(String surname) {
-        this.surname = surname;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        return  Objects.equals(id, account.id) &&
-                Objects.equals(customerId, account.customerId) &&
-                Objects.equals(name, account.name) &&
-                Objects.equals(surname, account.surname);
+        return Objects.equals(id, account.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerId, name, surname);
+        return Objects.hash(id);
     }
 }

@@ -8,10 +8,6 @@ public class AccountDTO {
 
     private Long customerId;
 
-    private String name;
-
-    private String surname;
-
     private long balance;
 
     private List<TransactionDTO> transactions;
@@ -32,24 +28,6 @@ public class AccountDTO {
 
     public AccountDTO setCustomerId(Long customerId) {
         this.customerId = customerId;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public AccountDTO setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public AccountDTO setSurname(String surname) {
-        this.surname = surname;
         return this;
     }
 

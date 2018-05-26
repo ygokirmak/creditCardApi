@@ -3,6 +3,7 @@ package com.company.cc.transaction.resource;
 
 import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.exceptions.EntityNotFoundException;
+import com.company.cc.transaction.resource.utils.PaginationUtil;
 import com.company.cc.transaction.service.TransactionService;
 import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.slf4j.Logger;
@@ -90,10 +91,12 @@ public class TransactionResource {
      * @return the ResponseEntity with status 200 (OK) and the list of transactions in body
      */
     @GetMapping("/transactions")
-    public ResponseEntity<List<TransactionDTO>> getTransactions(@RequestParam(required = true) Long accountId) {
+    public ResponseEntity<List<TransactionDTO>> getTransactions(@RequestParam(required = true) Long accountId,
+                                                                Pageable pageable) {
         log.debug("REST request to get a page of Transactions");
-        List<TransactionDTO> result = transactionService.getByAccountId(accountId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        Page<TransactionDTO> page = transactionService.getByAccountId(accountId,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,"/api/transactions");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 

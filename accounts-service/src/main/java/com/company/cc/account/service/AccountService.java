@@ -17,9 +17,7 @@ public interface AccountService {
 
     AccountDTO create(NewAccountDTO newAccountDTO) throws EntityAlreadyExistsException, TransactionCreationException;
 
-    AccountDTO update(AccountDTO accountDTO) throws EntityNotFoundException;
-
     AccountDTO delete(long id) throws EntityNotFoundException;
 
-    List<AccountDTO> getAccounts();
+    Page<AccountDTO> getAccounts(Pageable pageable);
 }

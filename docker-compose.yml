@@ -11,8 +11,8 @@ services:
       - gateway
     environment:
       - EUREKA_URL=http://user:password@eureka-server:8761
+      - RABBIT_HOST=rabbitmq
       - JAVA_OPTIONS=-Xmx300m
-
 
   transactions-service:
     image: cc/transactions-service:latest
@@ -24,8 +24,20 @@ services:
       - gateway
     environment:
       - EUREKA_URL=http://user:password@eureka-server:8761
+      - RABBIT_HOST=rabbitmq
       - JAVA_OPTIONS=-Xmx300m
 
+  customers-service:
+    image: cc/customers-service:latest
+    expose:
+      - '8083'
+    ports:
+      - '8083:8083'
+    depends_on:
+      - gateway
+    environment:
+      - EUREKA_URL=http://user:password@eureka-server:8761
+      - JAVA_OPTIONS=-Xmx300m
 
   gateway:
     image: cc/gateway:latest
@@ -41,3 +53,9 @@ services:
       - '8761:8761'
     environment:
       - JAVA_OPTIONS=-Xmx300m
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

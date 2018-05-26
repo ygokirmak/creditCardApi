@@ -85,9 +85,8 @@ public class TransactionServiceImp implements TransactionService{
     }
 
     @Override
-    public List<TransactionDTO> getByAccountId(Long accountId) {
-        return transactionRepository.findByAccountId(accountId)
-                .stream().map(transactionMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<TransactionDTO> getByAccountId(Long accountId,Pageable pageable) {
+        return transactionRepository.findByAccountId(accountId, pageable)
+                .map(transactionMapper::toDto);
     }
 }

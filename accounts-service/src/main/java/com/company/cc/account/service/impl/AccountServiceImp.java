@@ -11,7 +11,10 @@ import com.company.cc.account.service.dto.AccountDTO;
 import com.company.cc.account.service.dto.NewAccountDTO;
 import com.company.cc.account.service.dto.TransactionDTO;
 import com.company.cc.account.service.mapper.AccountMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +25,23 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImp implements AccountService{
 
     AccountRepository accountRepository;
     AccountMapper accountMapper;
+    RabbitTemplate rabbitTemplate;
 
     RestTemplate restTemplate;
 
 
     public AccountServiceImp(AccountRepository accountRepository, AccountMapper accountMapper,
-                             RestTemplate restTemplate) {
+                             RestTemplate restTemplate, RabbitTemplate rabbitTemplate) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
         this.restTemplate = restTemplate;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -73,7 +77,7 @@ public class AccountServiceImp implements AccountService{
                     new ParameterizedTypeReference<List<TransactionDTO>>() {};
 
             ResponseEntity<List<TransactionDTO>> response =
-                    restTemplate.exchange("http://transaction/api/transactions?accountId="+id, HttpMethod.GET, null, typeReference);
+                    restTemplate.exchange("http://transactions-service/api/transactions?accountId="+id, HttpMethod.GET, null, typeReference);
 
             return response.getBody();
         } catch (RestClientException ex){
@@ -93,6 +97,9 @@ public class AccountServiceImp implements AccountService{
             createTransaction(account, newAccountDTO.getInitialCredit());
         }
 
+        rabbitTemplate.convertAndSend("account-created", "foo.bar.baz", "Hello from RabbitMQ!");
+
+
         return accountMapper.toDto(account);
     }
 
@@ -110,25 +117,11 @@ public class AccountServiceImp implements AccountService{
 
         try {
             HttpEntity<TransactionDTO> request = new HttpEntity<>(transactionDTO);
-            TransactionDTO trx = restTemplate.postForObject("http://transaction/api/transactions", request, TransactionDTO.class);
+            TransactionDTO trx = restTemplate.postForObject("http://transactions-service/api/transactions", request, TransactionDTO.class);
         } catch (RestClientException ex){
             throw new TransactionCreationException(transactionDTO);
         }
 
-    }
-
-    @Override
-    public AccountDTO update(AccountDTO accountDTO) throws EntityNotFoundException {
-
-        Optional<Account> account = accountRepository.findById(accountDTO.getId());
-
-        if( account.isPresent() ){
-            Account saved = accountRepository.save(accountMapper.toEntity(accountDTO));
-            return accountMapper.toDto(saved);
-
-        }else{
-            throw new EntityNotFoundException(Account.class, "id", String.valueOf(accountDTO.getId()));
-        }
     }
 
     @Override
@@ -148,8 +141,8 @@ public class AccountServiceImp implements AccountService{
     }
 
     @Override
-    public List<AccountDTO> getAccounts() {
-        List<Account> accounts = accountRepository.findAll();
-        return accounts.stream().map( accountMapper::toDto).collect(Collectors.toList());
+    public Page<AccountDTO> getAccounts(Pageable pageable) {
+        Page<Account> accounts = accountRepository.findAll(pageable);
+        return accounts.map( accountMapper::toDto);
     }
 }

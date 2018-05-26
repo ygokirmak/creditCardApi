@@ -1,6 +1,8 @@
 spring:
   application:
     name: transactions-service
+  rabbitmq:
+    host: ${RABBIT_HOST}
 
 eureka:
   client:
