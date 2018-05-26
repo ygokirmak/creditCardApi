@@ -9,8 +9,8 @@
     <name>credit-card-api</name>
 
     <modules>
-        <module>account</module>
-        <module>transaction</module>
+        <module>accounts-service</module>
+        <module>transactions-service</module>
         <module>gateway</module>
         <module>eureka-server</module>
 

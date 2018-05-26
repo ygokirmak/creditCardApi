@@ -6,11 +6,11 @@ zuul:
   routes:
     accounts-api:
       path: /accounts-service/**
-      serviceId: account
+      serviceId: accounts-service
 
     transactions-api:
       path: /transactions-service/**
-      serviceId: transaction
+      serviceId: transactions-service
 
 server:
   port: 8080

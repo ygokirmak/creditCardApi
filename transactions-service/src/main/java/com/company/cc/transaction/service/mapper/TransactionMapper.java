@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {})
 public interface TransactionMapper extends EntityMapper<TransactionDTO, Transaction> {
 
-    @Mapping(target = "transactions", ignore = true)
     TransactionDTO toDto(Transaction transaction);
 
     Transaction toEntity(TransactionDTO transactionDTO);
