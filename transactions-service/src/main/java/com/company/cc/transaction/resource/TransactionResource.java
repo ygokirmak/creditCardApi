@@ -48,7 +48,7 @@ public class TransactionResource {
     }
 
     /**
-     * PUT  /accounts : Updates an existing account.
+     * PUT  /accounts : Updates an existing customer.
      *
      * @param transactionDTO the transactionDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated transactionDTO,
@@ -66,7 +66,7 @@ public class TransactionResource {
     }
 
     /**
-     * GET  /accounts/:id : get the "id" account.
+     * GET  /accounts/:id : get the "id" customer.
      *
      * @param id the id of the accountDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the accountDTO, or with status 404 (Not Found)

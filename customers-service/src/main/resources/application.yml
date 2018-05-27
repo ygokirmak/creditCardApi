@@ -9,3 +9,9 @@ eureka:
 
 server:
   port: 8083
+
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
