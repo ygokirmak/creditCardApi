@@ -26,7 +26,7 @@ public class TransactionServiceImp implements TransactionService {
 
         try {
             ResponseEntity<TransactionSummaryDTO> response =
-                    restTemplate.exchange("http://transactions-service/api/balances/"+customerId, HttpMethod.GET, null, TransactionSummaryDTO.class);
+                    restTemplate.exchange("http://transactions-service/api/transaction-summary/"+customerId, HttpMethod.GET, null, TransactionSummaryDTO.class);
 
             if( response.getStatusCodeValue() == 404){
                 // Create empty summary

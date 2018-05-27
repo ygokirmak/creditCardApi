@@ -6,4 +6,6 @@ eureka:
 spring:
   rabbitmq:
     dynamic: false
-
+  h2:
+    console:
+      enabled: true

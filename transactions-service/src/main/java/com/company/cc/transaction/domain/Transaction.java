@@ -16,18 +16,33 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Column(name = "customer_id", nullable = false)
+    @NotNull
+    private Long customerId;
+
     @Column(name = "account_id", nullable = false)
     @NotNull
     private Long accountId;
 
     @Column(name = "amount", nullable = false)
     @NotNull
-    private Long amount;
+    private Double amount;
 
     @Column(name = "direction", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private TransactionDirection direction;
+
+    public Transaction() {
+    }
+
+    public Transaction(@NotNull Long customerId, @NotNull Long accountId, @NotNull Double amount, @NotNull TransactionDirection direction) {
+        this.customerId = customerId;
+        this.accountId = accountId;
+        this.amount = amount;
+        this.direction = direction;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -51,11 +66,11 @@ public class Transaction implements Serializable {
         return this;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public Transaction setAmount(Long amount) {
+    public Transaction setAmount(Double amount) {
         this.amount = amount;
         return this;
     }
@@ -69,19 +84,25 @@ public class Transaction implements Serializable {
         return this;
     }
 
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public Transaction setCustomerId(Long customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Transaction)) return false;
         Transaction that = (Transaction) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(accountId, that.accountId) &&
-                Objects.equals(amount, that.amount) &&
-                direction == that.direction;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountId, amount, direction);
+        return Objects.hash(id);
     }
 }

@@ -7,9 +7,6 @@ import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
 import com.company.cc.account.repository.AccountRepository;
-import com.company.cc.account.service.AccountService;
-import com.company.cc.account.service.NotificationService;
-import com.company.cc.account.service.TransactionService;
 import com.company.cc.account.service.dto.AccountDTO;
 import com.company.cc.account.service.dto.TransactionDTO;
 import com.company.cc.account.service.impl.AccountServiceImp;
@@ -76,8 +73,8 @@ public class AccountServiceTest {
     public void getById() throws EntityNotFoundException, ServiceCommunicationException {
 
         List<TransactionDTO> transactions = new ArrayList<>();
-        transactions.add(new TransactionDTO(10l, testAccount.getId(), "IN"));
-        transactions.add(new TransactionDTO(20l, testAccount.getId(), "IN"));
+        transactions.add(new TransactionDTO(10d,testAccount.getCustomerId(), testAccount.getId(), "IN"));
+        transactions.add(new TransactionDTO(20d, testAccount.getCustomerId(), testAccount.getId(), "IN"));
 
         Mockito.when(transactionService.getTransactions(anyLong()))
                 .thenReturn(transactions);

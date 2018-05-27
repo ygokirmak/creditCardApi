@@ -1,11 +1,13 @@
 package com.company.cc.account.service.dto;
 
+import java.util.Objects;
 
 public class TransactionDTO {
 
     private Long id;
 
-    private Long amount;
+    private Double amount;
+    private Long customerId;
     private Long accountId;
     private String direction;
 
@@ -13,16 +15,26 @@ public class TransactionDTO {
         return id;
     }
 
+    public TransactionDTO() {
+    }
+
+    public TransactionDTO(Double amount, Long customerId, Long accountId, String direction) {
+        this.amount = amount;
+        this.customerId = customerId;
+        this.accountId = accountId;
+        this.direction = direction;
+    }
+
     public TransactionDTO setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public TransactionDTO setAmount(Long amount) {
+    public TransactionDTO setAmount(Double amount) {
         this.amount = amount;
         return this;
     }
@@ -45,22 +57,29 @@ public class TransactionDTO {
         return this;
     }
 
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public TransactionDTO setCustomerId(Long customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
     @Override
-    public String toString() {
-        return "TransactionDTO{" +
-                "id=" + id +
-                ", amount=" + amount +
-                ", accountId=" + accountId +
-                ", direction='" + direction + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransactionDTO)) return false;
+        TransactionDTO that = (TransactionDTO) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(amount, that.amount) &&
+                Objects.equals(customerId, that.customerId) &&
+                Objects.equals(accountId, that.accountId) &&
+                Objects.equals(direction, that.direction);
     }
 
-    public TransactionDTO(Long amount, Long accountId, String direction) {
-        this.amount = amount;
-        this.accountId = accountId;
-        this.direction = direction;
-    }
-
-    public TransactionDTO() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, customerId, accountId, direction);
     }
 }

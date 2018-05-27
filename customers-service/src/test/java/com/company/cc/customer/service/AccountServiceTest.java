@@ -65,12 +65,12 @@ public class AccountServiceTest {
 
         TransactionDTO trx1_1 = new TransactionDTO();
         trx1_1.setAccountId(1l);
-        trx1_1.setAmount(100l);
+        trx1_1.setAmount(100d);
         trx1_1.setDirection("IN");
 
         TransactionDTO trx1_2 = new TransactionDTO();
         trx1_2.setAccountId(1l);
-        trx1_2.setAmount(200l);
+        trx1_2.setAmount(200d);
         trx1_2.setDirection("OUT");
 
         List<TransactionDTO> account1Transactions = new ArrayList<>();
@@ -86,12 +86,12 @@ public class AccountServiceTest {
 
         TransactionDTO trx2_1 = new TransactionDTO();
         trx2_1.setAccountId(2l);
-        trx2_1.setAmount(200l);
+        trx2_1.setAmount(200d);
         trx2_1.setDirection("IN");
 
         TransactionDTO trx2_2 = new TransactionDTO();
         trx2_2.setAccountId(2l);
-        trx2_2.setAmount(100l);
+        trx2_2.setAmount(100d);
         trx2_2.setDirection("OUT");
 
         List<TransactionDTO> account2Transactions = new ArrayList<>();

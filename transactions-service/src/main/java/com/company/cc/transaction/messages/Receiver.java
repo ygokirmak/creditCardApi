@@ -1,21 +1,26 @@
 package com.company.cc.transaction.messages;
 
+import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
+import com.company.cc.transaction.service.TransactionService;
+import com.company.cc.transaction.service.dto.AccountDTO;
+import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.CountDownLatch;
 
 @Component
 public class Receiver {
 
-    private CountDownLatch latch = new CountDownLatch(1);
+    TransactionService transactionService;
 
-    public void receiveMessage(String message) {
-        System.out.println("Received <" + message + ">");
-        latch.countDown();
+    public Receiver(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
-    public CountDownLatch getLatch() {
-        return latch;
+    public void receiveMessage(AccountDTO accountDTO) throws EntityAlreadyExistsException {
+
+        if( accountDTO.getInitialCredit() > 0){
+            transactionService.create(new TransactionDTO(accountDTO.getInitialCredit(), accountDTO.getCustomerId(),
+                    accountDTO.getId(), "IN"));
+        }
     }
 
 }
