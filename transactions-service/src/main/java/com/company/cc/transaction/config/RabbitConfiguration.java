@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfiguration {
 
-    static final String topicExchangeName = "customer-created";
+    static final String topicExchangeName = "account-created";
 
     static final String queueName = "create-transaction";
 

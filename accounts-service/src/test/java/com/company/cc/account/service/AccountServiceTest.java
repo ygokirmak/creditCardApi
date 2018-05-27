@@ -8,7 +8,7 @@ import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
 import com.company.cc.account.repository.AccountRepository;
 import com.company.cc.account.service.dto.AccountDTO;
-import com.company.cc.account.service.dto.TransactionDTO;
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.account.service.impl.AccountServiceImp;
 import com.company.cc.account.service.mapper.AccountMapper;
 import org.junit.Before;

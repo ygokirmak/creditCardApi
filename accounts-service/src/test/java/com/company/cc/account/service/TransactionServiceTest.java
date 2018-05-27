@@ -3,12 +3,11 @@ package com.company.cc.account.service;
 
 import com.company.cc.account.AccountApplication;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
-import com.company.cc.account.service.dto.TransactionDTO;
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.account.service.impl.TransactionServiceImp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;

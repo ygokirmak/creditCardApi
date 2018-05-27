@@ -1,4 +1,4 @@
-package com.company.cc.account.service.dto;
+package com.company.cc.shared;
 
 import java.util.Objects;
 

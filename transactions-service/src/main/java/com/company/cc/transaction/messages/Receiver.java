@@ -2,7 +2,7 @@ package com.company.cc.transaction.messages;
 
 import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.service.TransactionService;
-import com.company.cc.transaction.service.dto.AccountDTO;
+import com.company.cc.shared.AccountDTO;
 import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.springframework.stereotype.Component;
 

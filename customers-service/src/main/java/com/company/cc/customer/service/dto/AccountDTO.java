@@ -1,8 +1,11 @@
 package com.company.cc.customer.service.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AccountDTO {
+public class AccountDTO implements Serializable{
+
+    private static final long serialVersionUID = 2850997990432943688L;
 
     private Long id;
 

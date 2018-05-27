@@ -4,8 +4,6 @@ import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.exceptions.EntityNotFoundException;
 import com.company.cc.transaction.service.dto.TransactionDTO;
 import com.company.cc.transaction.service.dto.TransactionSummaryDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

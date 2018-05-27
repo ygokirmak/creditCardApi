@@ -9,7 +9,7 @@ import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.NotificationService;
 import com.company.cc.account.service.TransactionService;
 import com.company.cc.account.service.dto.AccountDTO;
-import com.company.cc.account.service.dto.TransactionDTO;
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.account.service.mapper.AccountMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

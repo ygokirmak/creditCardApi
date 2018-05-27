@@ -1,7 +1,6 @@
 package com.company.cc.transaction.resource;
 
 
-import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.exceptions.EntityNotFoundException;
 import com.company.cc.transaction.service.TransactionService;
 import com.company.cc.transaction.service.dto.TransactionDTO;
@@ -11,10 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")

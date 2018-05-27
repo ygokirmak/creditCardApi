@@ -1,9 +1,11 @@
-package com.company.cc.transaction.service.dto;
+package com.company.cc.shared;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-public class AccountDTO {
+public class AccountDTO implements Serializable {
+
+    private static final long serialVersionUID = 2850997990432943688L;
 
     private Long id;
 
@@ -48,21 +50,5 @@ public class AccountDTO {
     public AccountDTO setInitialCredit(double initialCredit) {
         this.initialCredit = initialCredit;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccountDTO)) return false;
-        AccountDTO that = (AccountDTO) o;
-        return initialCredit == that.initialCredit &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(customerId, that.customerId) &&
-                Objects.equals(transactions, that.transactions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, customerId, initialCredit, transactions);
     }
 }

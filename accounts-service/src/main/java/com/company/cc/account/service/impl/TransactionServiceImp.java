@@ -2,7 +2,7 @@ package com.company.cc.account.service.impl;
 
 import com.company.cc.account.exceptions.ServiceCommunicationException;
 import com.company.cc.account.service.TransactionService;
-import com.company.cc.account.service.dto.TransactionDTO;
+import com.company.cc.shared.TransactionDTO;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
