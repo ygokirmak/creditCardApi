@@ -83,7 +83,7 @@ public class CustomerResourceTest {
     }
 
     @Test
-    public void getCustomerAccount() throws Exception {
+    public void getCustomer() throws Exception {
 
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(1l);
@@ -105,7 +105,7 @@ public class CustomerResourceTest {
     }
 
     @Test
-    public void getCustomerAccountDefaultViewBasic() throws Exception {
+    public void getCustomerDefaultViewBasic() throws Exception {
 
         Mockito.when(customerService.getOne(ArgumentMatchers.any(CustomerView.class), ArgumentMatchers.anyLong()) )
                 .thenReturn(new CustomerDTO());
@@ -119,7 +119,7 @@ public class CustomerResourceTest {
     }
 
     @Test
-    public void getCustomerAccountWithBasicView() throws Exception {
+    public void getCustomerWithBasicView() throws Exception {
 
         Mockito.when(customerService.getOne(ArgumentMatchers.any(CustomerView.class), ArgumentMatchers.anyLong()) )
                 .thenReturn(new CustomerDTO());
@@ -133,7 +133,7 @@ public class CustomerResourceTest {
     }
 
     @Test
-    public void getCustomerAccountWithFullView() throws Exception {
+    public void getCustomerWithFullView() throws Exception {
 
         Mockito.when(customerService.getOne(ArgumentMatchers.any(CustomerView.class), ArgumentMatchers.anyLong()) )
                 .thenReturn(new CustomerDTO());
