@@ -3,8 +3,8 @@ package com.company.cc.account.service;
 
 import com.company.cc.account.AccountApplication;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
-import com.company.cc.account.service.dto.AccountDTO;
 import com.company.cc.account.service.impl.NotificationServiceImp;
+import com.company.cc.shared.AccountDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;

@@ -1,7 +1,7 @@
 package com.company.cc.account.service;
 
 import com.company.cc.account.exceptions.ServiceCommunicationException;
-import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.shared.AccountDTO;
 
 public interface NotificationService {
 

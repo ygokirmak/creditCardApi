@@ -1,11 +1,11 @@
 package com.company.cc.transaction.service.impl;
 
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.transaction.domain.Transaction;
 import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.exceptions.EntityNotFoundException;
 import com.company.cc.transaction.repository.TransactionRepository;
 import com.company.cc.transaction.service.TransactionService;
-import com.company.cc.transaction.service.dto.TransactionDTO;
 import com.company.cc.transaction.service.dto.TransactionSummaryDTO;
 import com.company.cc.transaction.service.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
@@ -49,14 +49,15 @@ public class TransactionServiceImp implements TransactionService{
     }
 
     @Override
-    public TransactionSummaryDTO getSummaryByCustomerId(Long customerId) throws EntityNotFoundException {
+    public TransactionSummaryDTO getSummaryByCustomerId(Long customerId) {
         Optional<Double> balance = transactionRepository.getSummaryByCustomerId(customerId);
+        TransactionSummaryDTO transactionSummaryDTO = null;
 
         if(!balance.isPresent()){
-            throw new EntityNotFoundException(TransactionSummaryDTO.class, "customerId", String.valueOf(customerId));
+            transactionSummaryDTO = new TransactionSummaryDTO(customerId );
+        }else{
+            transactionSummaryDTO = new TransactionSummaryDTO(customerId, balance.get() );
         }
-
-        TransactionSummaryDTO transactionSummaryDTO = new TransactionSummaryDTO(customerId, balance.get() );
 
         return  transactionSummaryDTO;
 

@@ -8,7 +8,7 @@ import com.company.cc.account.repository.AccountRepository;
 import com.company.cc.account.service.AccountService;
 import com.company.cc.account.service.NotificationService;
 import com.company.cc.account.service.TransactionService;
-import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.shared.AccountDTO;
 import com.company.cc.shared.TransactionDTO;
 import com.company.cc.account.service.mapper.AccountMapper;
 import org.springframework.data.domain.Page;
@@ -16,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImp implements AccountService {
@@ -42,9 +44,7 @@ public class AccountServiceImp implements AccountService {
         Optional<Account> account = accountRepository.findById(id);
 
         if( account.isPresent() ){
-            AccountDTO accountDTO = accountMapper.toDto(account.get());
-            List<TransactionDTO> transactions = transactionService.getTransactions(accountDTO.getId());
-            accountDTO.setTransactions(transactions);
+            AccountDTO accountDTO = addAccountTransactions(account.get());
             return accountDTO;
         }else{
             throw new EntityNotFoundException(Account.class, "id", String.valueOf(id));
@@ -66,8 +66,22 @@ public class AccountServiceImp implements AccountService {
 
 
     @Override
-    public Page<AccountDTO> getAccounts(Pageable pageable) {
-        Page<Account> accounts = accountRepository.findAll(pageable);
-        return accounts.map( accountMapper::toDto);
+    public List<AccountDTO> getAccounts(Long customerId) throws ServiceCommunicationException {
+        List<Account> accounts = accountRepository.findAllByCustomerId(customerId);
+        List<AccountDTO> accountDTOs = new ArrayList<>();
+
+        for(Account account : accounts){
+            accountDTOs.add(addAccountTransactions(account));
+        }
+
+        return accountDTOs;
+    }
+
+    private AccountDTO addAccountTransactions(Account account) throws ServiceCommunicationException {
+        AccountDTO accountDTO = accountMapper.toDto(account);
+        List<TransactionDTO> transactions = transactionService.getTransactions(account.getId());
+        accountDTO.setTransactions(transactions);
+
+        return accountDTO;
     }
 }

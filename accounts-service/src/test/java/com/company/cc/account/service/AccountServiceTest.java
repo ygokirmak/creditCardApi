@@ -7,7 +7,7 @@ import com.company.cc.account.exceptions.EntityAlreadyExistsException;
 import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
 import com.company.cc.account.repository.AccountRepository;
-import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.shared.AccountDTO;
 import com.company.cc.shared.TransactionDTO;
 import com.company.cc.account.service.impl.AccountServiceImp;
 import com.company.cc.account.service.mapper.AccountMapper;
@@ -27,6 +27,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -127,7 +128,7 @@ public class AccountServiceTest {
     @Test
     public void createAccountWithInitialCredit() throws EntityAlreadyExistsException, ServiceCommunicationException {
 
-        Mockito.doNothing().when(notificationService).accountCreatedNotification(ArgumentMatchers.any(AccountDTO.class));
+        Mockito.doNothing().when(notificationService).accountCreatedNotification(any(AccountDTO.class));
 
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setCustomerId(20l);
@@ -135,7 +136,7 @@ public class AccountServiceTest {
 
         AccountDTO createdAccount = accountService.create(accountDTO);
 
-        verify(notificationService, times(1)).accountCreatedNotification(eq(createdAccount));
+        verify(notificationService, times(1)).accountCreatedNotification(any(AccountDTO.class));
 
         assertThat(createdAccount.getId()).isNotNull();
         assertThat(createdAccount.getCustomerId()).isEqualTo(20l);
@@ -147,7 +148,7 @@ public class AccountServiceTest {
     public void failedToCreateAccount_CommunicationException() throws EntityAlreadyExistsException, ServiceCommunicationException {
 
         Mockito.doThrow(new ServiceCommunicationException("message"))
-                .when(notificationService).accountCreatedNotification(ArgumentMatchers.any(AccountDTO.class));
+                .when(notificationService).accountCreatedNotification(any(AccountDTO.class));
 
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setCustomerId(20l);

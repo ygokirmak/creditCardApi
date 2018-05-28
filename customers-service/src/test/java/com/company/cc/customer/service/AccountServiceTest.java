@@ -2,24 +2,17 @@ package com.company.cc.customer.service;
 
 
 import com.company.cc.customer.CustomerApplication;
-import com.company.cc.customer.domain.Customer;
 import com.company.cc.customer.exceptions.EntityNotFoundException;
 import com.company.cc.customer.exceptions.ServiceCommunicationException;
-import com.company.cc.customer.repository.CustomerRepository;
 import com.company.cc.customer.service.dto.AccountDTO;
-import com.company.cc.customer.service.dto.CustomerDTO;
 import com.company.cc.customer.service.dto.TransactionDTO;
-import com.company.cc.customer.service.enumeration.CustomerView;
 import com.company.cc.customer.service.impl.AccountServiceImp;
-import com.company.cc.customer.service.impl.CustomerServiceImp;
-import com.company.cc.customer.service.mapper.CustomerMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -32,11 +25,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 

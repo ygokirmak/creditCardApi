@@ -46,21 +46,21 @@ public class TransactionServiceTest {
     @Test
     public void getTransactionsSummary() throws ServiceCommunicationException, EntityNotFoundException {
 
-        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transaction-summary/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class)) )
+        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transaction-summaries/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class)) )
                 .thenReturn(new ResponseEntity<>(new TransactionSummaryDTO(1l,10.1d), HttpStatus.OK));
 
         TransactionSummaryDTO summaryDTO = transactionService.getTransactionSummary(1l);
 
         assertThat(summaryDTO.getBalance()).isEqualTo(10.1d);
 
-        verify(restTemplate, times(1)).exchange(eq("http://transactions-service/api/transaction-summary/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class));
+        verify(restTemplate, times(1)).exchange(eq("http://transactions-service/api/transaction-summaries/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class));
 
         verifyNoMoreInteractions(restTemplate);
     }
 
     @Test
     public void failedToGetTransactionsSummary_CommunicationException() throws ServiceCommunicationException {
-        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transaction-summary/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class)) )
+        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transaction-summaries/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class)) )
                 .thenThrow(new RestClientException("message"));
 
         assertThatThrownBy(() -> transactionService.getTransactionSummary(1L))
@@ -68,18 +68,6 @@ public class TransactionServiceTest {
 
     }
 
-    @Test
-    public void failedToGetTransactionsSummary_NoTransaction() throws ServiceCommunicationException {
-        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transaction-summary/1"),eq(HttpMethod.GET),eq(null),eq(TransactionSummaryDTO.class)) )
-                .thenReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
-        TransactionSummaryDTO summaryDTO = transactionService.getTransactionSummary(1L);
-
-        assertThat(summaryDTO.getCustomerId()).isEqualTo(1L);
-        assertThat(summaryDTO.getBalance()).isEqualTo(0);
-
-
-    }
 
 
 }

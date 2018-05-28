@@ -1,9 +1,9 @@
 package com.company.cc.transaction.resource;
 
 
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.transaction.exceptions.EntityAlreadyExistsException;
 import com.company.cc.transaction.service.TransactionService;
-import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

@@ -80,14 +80,14 @@ public class TransactionServiceTest {
     @Test
     public void getTransactions() throws ServiceCommunicationException {
 
-        Mockito.when(restTemplate.exchange(eq("http://transcations-service/api/transactions?accountId=1"),eq(HttpMethod.GET),eq(null),eq(typeReference)) )
+        Mockito.when(restTemplate.exchange(eq("http://transactions-service/api/transactions?accountId=1"),eq(HttpMethod.GET),eq(null),eq(typeReference)) )
                 .thenReturn(new ResponseEntity<>(transactions, HttpStatus.OK));
 
         List<TransactionDTO> fetchedTransactions = transactionService.getTransactions(1L);
 
         assertThat(fetchedTransactions).isEqualTo(transactions);
 
-        verify(restTemplate, times(1)).exchange(eq("http://transcations-service/api/transactions?accountId=1"),eq(HttpMethod.GET),eq(null), eq(typeReference));
+        verify(restTemplate, times(1)).exchange(eq("http://transactions-service/api/transactions?accountId=1"),eq(HttpMethod.GET),eq(null), eq(typeReference));
 
         verifyNoMoreInteractions(restTemplate);
     }

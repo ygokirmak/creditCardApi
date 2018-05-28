@@ -3,7 +3,6 @@ package com.company.cc.transaction.resource;
 
 import com.company.cc.transaction.exceptions.EntityNotFoundException;
 import com.company.cc.transaction.service.TransactionService;
-import com.company.cc.transaction.service.dto.TransactionDTO;
 import com.company.cc.transaction.service.dto.TransactionSummaryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +30,12 @@ public class TransactionSummaryResource {
      * @return the ResponseEntity with status 200 (OK) and with body the TransactionSummaryDTO, or with status 404 (Not Found)
      */
     @GetMapping("/transaction-summaries/{id}")
-    public ResponseEntity getCustomer(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity getCustomer(@PathVariable Long id) {
         log.debug("REST request to get summary for customer : {}", id);
-        TransactionSummaryDTO transactionSummaryDTO = transactionService.getSummaryByCustomerId(id);
 
-        if( transactionSummaryDTO == null ){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }else{
-            return ResponseEntity.ok().body(transactionSummaryDTO);
-        }
+        TransactionSummaryDTO transactionSummaryDTO = transactionService.getSummaryByCustomerId(id);
+        return ResponseEntity.ok().body(transactionSummaryDTO);
+
     }
 
 

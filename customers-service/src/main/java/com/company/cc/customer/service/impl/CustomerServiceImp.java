@@ -8,7 +8,6 @@ import com.company.cc.customer.service.AccountService;
 import com.company.cc.customer.service.CustomerService;
 import com.company.cc.customer.service.TransactionService;
 import com.company.cc.customer.service.dto.CustomerDTO;
-import com.company.cc.customer.service.enumeration.CustomerView;
 import com.company.cc.customer.service.mapper.CustomerMapper;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getOne(CustomerView view, long id) throws EntityNotFoundException, ServiceCommunicationException {
+    public CustomerDTO getOne(long id) throws EntityNotFoundException, ServiceCommunicationException {
         Optional<Customer> optional = customerRepository.findById(id);
 
         if( !optional.isPresent() ){
@@ -42,17 +41,15 @@ public class CustomerServiceImp implements CustomerService {
         else {
             CustomerDTO customerDTO = customerMapper.toDto(optional.get());
 
-            if( view.equals(CustomerView.FULL) ){
-                customerDTO.setAccounts(accountService.getAccounts(id));
-                customerDTO.setBalance(transactionService.getTransactionSummary(id).getBalance());
-            }
+            customerDTO.setAccounts(accountService.getAccounts(id));
+            customerDTO.setBalance(transactionService.getTransactionSummary(id).getBalance());
 
             return customerDTO;
         }
     }
 
     @Override
-    public List<CustomerDTO> getCustomers(CustomerView view) {
+    public List<CustomerDTO> getCustomers() {
         return customerRepository.findAll().stream().map(customerMapper::toDto).collect(Collectors.toList());
     }
 }

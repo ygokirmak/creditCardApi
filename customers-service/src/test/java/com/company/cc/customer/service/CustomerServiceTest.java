@@ -10,7 +10,6 @@ import com.company.cc.customer.service.dto.AccountDTO;
 import com.company.cc.customer.service.dto.CustomerDTO;
 import com.company.cc.customer.service.dto.TransactionDTO;
 import com.company.cc.customer.service.dto.TransactionSummaryDTO;
-import com.company.cc.customer.service.enumeration.CustomerView;
 import com.company.cc.customer.service.impl.CustomerServiceImp;
 import com.company.cc.customer.service.mapper.CustomerMapper;
 import org.junit.Before;
@@ -114,25 +113,9 @@ public class CustomerServiceTest {
         accounts.add(account2);
     }
 
-    @Test
-    public void getOneCustomerBasicView() throws ServiceCommunicationException, EntityNotFoundException {
-
-        Mockito.when(customerRepository.findById(anyLong()) )
-                .thenReturn(Optional.of(customer));
-
-        CustomerDTO customerDTO = customerService.getOne(CustomerView.BASIC, 1l);
-        assertThat(customerDTO.getName()).isEqualTo(customer.getName());
-        assertThat(customerDTO.getSurname()).isEqualTo(customer.getSurname());
-
-        verify(customerRepository, times(1)).findById(eq(1l));
-
-        verifyNoMoreInteractions(customerRepository);
-        verifyNoMoreInteractions(accountService);
-        verifyNoMoreInteractions(transactionService);
-    }
 
     @Test
-    public void getOneCustomerFullView() throws ServiceCommunicationException, EntityNotFoundException {
+    public void getOneCustomer() throws ServiceCommunicationException, EntityNotFoundException {
         Mockito.when(customerRepository.findById(anyLong()) )
                 .thenReturn(Optional.of(customer));
 
@@ -140,17 +123,17 @@ public class CustomerServiceTest {
                 .thenReturn(accounts);
 
         Mockito.when(transactionService.getTransactionSummary(anyLong()) )
-                .thenReturn(new TransactionSummaryDTO(1l,10.3d));
+                .thenReturn(new TransactionSummaryDTO(1L,10.3d));
 
-        CustomerDTO customerDTO = customerService.getOne(CustomerView.FULL, 1l);
+        CustomerDTO customerDTO = customerService.getOne(1L);
         assertThat(customerDTO.getName()).isEqualTo(customer.getName());
         assertThat(customerDTO.getSurname()).isEqualTo(customer.getSurname());
         assertThat(customerDTO.getAccounts()).isEqualTo(accounts);
         assertThat(customerDTO.getBalance()).isEqualTo(10.3d);
 
-        verify(customerRepository, times(1)).findById(eq(1l));
-        verify(accountService, times(1)).getAccounts(eq(1l));
-        verify(transactionService, times(1)).getTransactionSummary(eq(1l));
+        verify(customerRepository, times(1)).findById(eq(1L));
+        verify(accountService, times(1)).getAccounts(eq(1L));
+        verify(transactionService, times(1)).getTransactionSummary(eq(1L));
 
         verifyNoMoreInteractions(customerRepository);
         verifyNoMoreInteractions(accountService);
@@ -166,10 +149,10 @@ public class CustomerServiceTest {
         Mockito.when(customerRepository.findById(anyLong()) )
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> customerService.getOne(CustomerView.BASIC, 1L) )
+        assertThatThrownBy(() -> customerService.getOne(1L) )
                 .isInstanceOf(EntityNotFoundException.class);
 
-        verify(customerRepository, times(1)).findById(eq(1l));
+        verify(customerRepository, times(1)).findById(eq(1L));
 
         verifyNoMoreInteractions(customerRepository);
         verifyNoMoreInteractions(accountService);
@@ -186,11 +169,11 @@ public class CustomerServiceTest {
         Mockito.when(accountService.getAccounts(anyLong()) )
                 .thenThrow(new ServiceCommunicationException("message"));
 
-        assertThatThrownBy(() -> customerService.getOne(CustomerView.FULL, 1l) )
+        assertThatThrownBy(() -> customerService.getOne(1L) )
                 .isInstanceOf(ServiceCommunicationException.class);
 
-        verify(customerRepository, times(1)).findById(eq(1l));
-        verify(accountService, times(1)).getAccounts(eq(1l));
+        verify(customerRepository, times(1)).findById(eq(1L));
+        verify(accountService, times(1)).getAccounts(eq(1L));
 
         verifyNoMoreInteractions(customerRepository);
         verifyNoMoreInteractions(accountService);
@@ -207,12 +190,12 @@ public class CustomerServiceTest {
         Mockito.when(transactionService.getTransactionSummary(anyLong()) )
                 .thenThrow(new ServiceCommunicationException("message2"));
 
-        assertThatThrownBy(() -> customerService.getOne(CustomerView.FULL, 1l) )
+        assertThatThrownBy(() -> customerService.getOne(1L) )
                 .isInstanceOf(ServiceCommunicationException.class);
 
-        verify(customerRepository, times(1)).findById(eq(1l));
-        verify(accountService, times(1)).getAccounts(eq(1l));
-        verify(transactionService, times(1)).getTransactionSummary(eq(1l));
+        verify(customerRepository, times(1)).findById(eq(1L));
+        verify(accountService, times(1)).getAccounts(eq(1L));
+        verify(transactionService, times(1)).getTransactionSummary(eq(1L));
 
         verifyNoMoreInteractions(customerRepository);
         verifyNoMoreInteractions(accountService);

@@ -2,6 +2,7 @@ package com.company.cc.shared;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class AccountDTO implements Serializable {
 
@@ -50,5 +51,21 @@ public class AccountDTO implements Serializable {
     public AccountDTO setInitialCredit(double initialCredit) {
         this.initialCredit = initialCredit;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AccountDTO)) return false;
+        AccountDTO that = (AccountDTO) o;
+        return Double.compare(that.initialCredit, initialCredit) == 0 &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(customerId, that.customerId) &&
+                Objects.equals(transactions, that.transactions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, customerId, initialCredit, transactions);
     }
 }

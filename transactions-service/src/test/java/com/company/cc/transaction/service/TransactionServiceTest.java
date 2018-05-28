@@ -1,10 +1,10 @@
 package com.company.cc.transaction.service;
 
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.transaction.TransactionApplication;
 import com.company.cc.transaction.domain.Transaction;
 import com.company.cc.transaction.domain.enumeration.TransactionDirection;
 import com.company.cc.transaction.repository.TransactionRepository;
-import com.company.cc.transaction.service.dto.TransactionDTO;
 import com.company.cc.transaction.service.impl.TransactionServiceImp;
 import com.company.cc.transaction.service.mapper.TransactionMapper;
 import org.junit.Before;

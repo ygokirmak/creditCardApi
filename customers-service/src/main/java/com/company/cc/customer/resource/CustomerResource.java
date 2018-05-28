@@ -5,7 +5,6 @@ import com.company.cc.customer.exceptions.EntityNotFoundException;
 import com.company.cc.customer.exceptions.ServiceCommunicationException;
 import com.company.cc.customer.service.CustomerService;
 import com.company.cc.customer.service.dto.CustomerDTO;
-import com.company.cc.customer.service.enumeration.CustomerView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,9 +31,9 @@ public class CustomerResource {
      * @return the ResponseEntity with status 200 (OK) and the list of customers in body
      */
     @GetMapping("/customers")
-    public ResponseEntity<List<CustomerDTO>> getCustomers(@RequestParam(required = false, defaultValue = "BASIC") CustomerView view) {
+    public ResponseEntity<List<CustomerDTO>> getCustomers() {
         log.debug("REST request to get a page of Customers");
-        List<CustomerDTO> result = customerService.getCustomers(view);
+        List<CustomerDTO> result = customerService.getCustomers();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -45,9 +44,9 @@ public class CustomerResource {
      * @return the ResponseEntity with status 200 (OK) and with body the customerDTO, or with status 404 (Not Found)
      */
     @GetMapping("/customers/{id}")
-    public ResponseEntity getCustomer(@PathVariable Long id, @RequestParam(required = false, defaultValue = "BASIC") CustomerView view) throws EntityNotFoundException, ServiceCommunicationException {
+    public ResponseEntity getCustomer(@PathVariable Long id) throws EntityNotFoundException, ServiceCommunicationException {
         log.debug("REST request to get Customer : {}", id);
-        CustomerDTO customerDTO = customerService.getOne(view, id);
+        CustomerDTO customerDTO = customerService.getOne(id);
 
         if( customerDTO == null ){
             return new ResponseEntity(HttpStatus.NOT_FOUND);

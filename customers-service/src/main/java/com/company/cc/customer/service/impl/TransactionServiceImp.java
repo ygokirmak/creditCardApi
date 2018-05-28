@@ -22,22 +22,17 @@ public class TransactionServiceImp implements TransactionService {
     @Override
     public TransactionSummaryDTO getTransactionSummary(long customerId) throws ServiceCommunicationException{
 
-        TransactionSummaryDTO balance = null;
+        TransactionSummaryDTO summary = null;
 
         try {
             ResponseEntity<TransactionSummaryDTO> response =
-                    restTemplate.exchange("http://transactions-service/api/transaction-summary/"+customerId, HttpMethod.GET, null, TransactionSummaryDTO.class);
+                    restTemplate.exchange("http://transactions-service/api/transaction-summaries/"+customerId, HttpMethod.GET, null, TransactionSummaryDTO.class);
 
-            if( response.getStatusCodeValue() == 404){
-                // Create empty summary
-                balance = new TransactionSummaryDTO(customerId);
-            }else{
-                balance = response.getBody();
-            }
+            summary = response.getBody();
         }catch (RestClientException ex){
             throw new ServiceCommunicationException(ex.getMessage());
         }
 
-        return balance;
+        return summary;
     }
 }

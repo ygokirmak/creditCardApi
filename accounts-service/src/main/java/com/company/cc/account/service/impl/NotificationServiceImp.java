@@ -2,7 +2,7 @@ package com.company.cc.account.service.impl;
 
 import com.company.cc.account.exceptions.ServiceCommunicationException;
 import com.company.cc.account.service.NotificationService;
-import com.company.cc.account.service.dto.AccountDTO;
+import com.company.cc.shared.AccountDTO;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;

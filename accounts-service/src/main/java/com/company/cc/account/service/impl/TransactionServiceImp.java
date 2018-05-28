@@ -30,7 +30,7 @@ public class TransactionServiceImp implements TransactionService {
                     new ParameterizedTypeReference<List<TransactionDTO>>() {};
 
             ResponseEntity<List<TransactionDTO>> response =
-                    restTemplate.exchange("http://transcations-service/api/transactions?accountId="+accountId, HttpMethod.GET, null, typeReference);
+                    restTemplate.exchange("http://transactions-service/api/transactions?accountId="+accountId, HttpMethod.GET, null, typeReference);
 
             transactions = response.getBody();
         }catch (RestClientException ex){

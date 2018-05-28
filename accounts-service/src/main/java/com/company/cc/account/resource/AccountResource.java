@@ -1,15 +1,13 @@
 package com.company.cc.account.resource;
 
 
-import com.company.cc.account.exceptions.EntityNotFoundException;
-import com.company.cc.account.service.AccountService;
-import com.company.cc.account.service.dto.AccountDTO;
 import com.company.cc.account.exceptions.EntityAlreadyExistsException;
+import com.company.cc.account.exceptions.EntityNotFoundException;
 import com.company.cc.account.exceptions.ServiceCommunicationException;
+import com.company.cc.account.service.AccountService;
+import com.company.cc.shared.AccountDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +34,10 @@ public class AccountResource {
      * @return the ResponseEntity with status 200 (OK) and the list of deals in body
      */
     @GetMapping("/accounts")
-    public ResponseEntity<List<AccountDTO>> getAccounts(Pageable pageable) {
+    public ResponseEntity<List<AccountDTO>> getAccounts(@RequestParam(required = true) Long customerId) throws ServiceCommunicationException {
         log.debug("REST request to get a page of Accounts");
-        Page<AccountDTO> page = accountService.getAccounts(pageable);
-        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
+        List<AccountDTO> result = accountService.getAccounts(customerId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**

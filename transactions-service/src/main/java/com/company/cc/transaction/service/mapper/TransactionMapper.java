@@ -1,7 +1,7 @@
 package com.company.cc.transaction.service.mapper;
 
+import com.company.cc.shared.TransactionDTO;
 import com.company.cc.transaction.domain.Transaction;
-import com.company.cc.transaction.service.dto.TransactionDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {})
